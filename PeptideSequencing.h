@@ -109,3 +109,6 @@ int countingPeptidesWithGivenMassProblem(int n) { // wrong answer
 				count[i] += count[static_cast<std::vector<int, std::allocator<int>>::size_type>(i) - m];
 	return count[n];
 }
+long long int countingSpectrumOfTheLinearPeptideProblem(long long int n) {
+	return (((1 + n) * n) / 2 + 1);
+}
