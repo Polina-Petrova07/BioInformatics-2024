@@ -8,4 +8,9 @@ ____
 
 + second-section-PeptideSequencing  
     + File "bioinformatics.cpp" contains function "main".
-    + File "PeptideSequencing.h" contains functions for the first section of course.  
+    + File "PeptideSequencing.h" contains functions for the first section of course.
+
+>будет дополняться)
+____
+ННГУ. ИИТММ.  
+>Copyrighting Busko Polina 2024
