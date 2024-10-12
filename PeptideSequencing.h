@@ -112,3 +112,297 @@ int countingPeptidesWithGivenMassProblem(int n) { // wrong answer
 long long int countingSpectrumOfTheLinearPeptideProblem(long long int n) {
 	return (((1 + n) * n) / 2 + 1);
 }
+std::vector<int> CyclicSpectrum(const std::string& peptide) {
+	std::vector<int> prefix_mass(1, 0);
+	for (size_t i = 0; i < peptide.size(); ++i) {
+		prefix_mass.push_back(prefix_mass[i] + TheoreticalSpectrum[peptide[i]]);
+	}
+	int peptide_mass = prefix_mass.back();
+	std::vector<int> cyclo_spectrum = { 0 };
+	for (size_t i = 0; i < peptide.size(); ++i) {
+		for (size_t j = i + 1; j <= peptide.size(); ++j) {
+			cyclo_spectrum.push_back(prefix_mass[j] - prefix_mass[i]);
+			if (i > 0 && j < peptide.size()) {
+				int cur = peptide_mass - (prefix_mass[j] - prefix_mass[i]);
+				cyclo_spectrum.push_back(cur);
+			}
+		}
+	}
+	std::sort(cyclo_spectrum.begin(), cyclo_spectrum.end());
+	return cyclo_spectrum;
+}
+
+std::vector<int> LinearSpectrum_1(const std::string& peptide) {
+	std::vector<int> prefix_mass(1, 0);
+	for (size_t i = 0; i < peptide.size(); ++i) {
+		prefix_mass.push_back(prefix_mass[i] + TheoreticalSpectrum[peptide[i]]);
+	}
+	std::vector<int> linear_spectrum = { 0 };
+	for (size_t i = 0; i < peptide.size(); ++i) {
+		for (size_t j = i + 1; j <= peptide.size(); ++j) {
+			linear_spectrum.push_back(prefix_mass[j] - prefix_mass[i]);
+		}
+	}
+	std::sort(linear_spectrum.begin(), linear_spectrum.end());
+	return linear_spectrum;
+}
+
+std::vector<std::string> Expand_1(const std::vector<std::string>& peptides) {
+	std::vector<std::string> expanded_peptides;
+	for (const auto& peptide : peptides) {
+		for (const auto& key : TheoreticalSpectrum) {
+			expanded_peptides.push_back(peptide + key.first);
+		}
+	}
+	return expanded_peptides;
+}
+
+int onePeptideMass(const std::string& peptide) {
+	int m = 0;
+	for (char pep : peptide) {
+		m += TheoreticalSpectrum[pep];
+	}
+	return m;
+}
+
+int ParentMass(const std::vector<int>& spectrum) {
+	return spectrum.back();
+}
+
+bool Inconsistent(const std::string& peptide, const std::vector<int>& spectrum) {
+	auto a = LinearSpectrum_1(peptide);
+	std::multiset<int> s(spectrum.begin(), spectrum.end());
+	for (int pep : a) {
+		auto it = s.find(pep);
+		if (it == s.end()) {
+			return true;
+		}
+		s.erase(it);
+	}
+	return false;
+}
+std::vector<std::string> cyclopeptideSequencingProblem(const std::vector<int>& spectrum) {
+	std::vector<std::string> peptides = { "" };
+	std::vector<std::string> ans;
+
+	auto es = Expand_1(peptides);
+
+	for (const auto& p : es) {
+		if (!Inconsistent(p, spectrum)) {
+			peptides.push_back(p);
+		}
+	}
+
+	while (!peptides.empty()) {
+		peptides = Expand_1(peptides);
+		for (size_t i = 0; i < peptides.size(); ++i) {
+			const auto& p = peptides[i];
+			if (onePeptideMass(p) == ParentMass(spectrum)) {
+				if (CyclicSpectrum(p) == spectrum) {
+					ans.push_back(p);
+				}
+				peptides.erase(peptides.begin() + i);
+				--i;
+			}
+			else if (Inconsistent(p, spectrum)) {
+				peptides.erase(peptides.begin() + i);
+				--i;
+			}
+		}
+	}
+
+	std::set<std::string> unique_ans(ans.begin(), ans.end());
+	return std::vector<std::string>(unique_ans.begin(), unique_ans.end());
+}
+std::map<int, int> cyclicSpectrumDict(std::string peptide) {
+	int n = peptide.length();
+	std::vector<int> PrefixMass(n + 1, 0);
+
+	for (int i = 0; i < n; ++i) {
+		PrefixMass[i + 1] = PrefixMass[i] + TheoreticalSpectrum[peptide[i]];
+	}
+
+	int peptideMass = PrefixMass[n];
+	std::map<int, int> cSpectrumDict;
+	cSpectrumDict[0] = 1;
+
+	for (int i = 0; i < n; ++i) {
+		for (int j = i + 1; j <= n; ++j) {
+			int s = PrefixMass[j] - PrefixMass[i];
+			cSpectrumDict[s]++;
+			if (i > 0 && j < n) {
+				s = peptideMass - (PrefixMass[j] - PrefixMass[i]);
+				cSpectrumDict[s]++;
+			}
+		}
+	}
+
+	return cSpectrumDict;
+}
+
+int cyclopeptideScoringProblem(const std::string& peptide, const std::vector<int>& spectrum) {
+	auto theoSpectrumDict = cyclicSpectrumDict(peptide);
+	int score = 0;
+	std::map<int, int> spectrumDict;
+
+	for (int s : spectrum) {
+		spectrumDict[s]++;
+	}
+
+	for (const auto& [s, v] : theoSpectrumDict) {
+		int v0 = spectrumDict[s];
+		score += std::min(v0, v);
+	}
+
+	return score;
+}
+std::vector<std::string> allMasses = { "57", "71", "87", "97", "99", "101", "103", "113", "114", "115", "128", "129", "131", "137", "147", "156", "163", "186" };
+
+std::vector<int> SplitStringToList(const std::string& peptide, char delimiter = '-') {
+	std::vector<int> result;
+	std::stringstream ss(peptide);
+	std::string item;
+	while (getline(ss, item, delimiter)) {
+		result.push_back(stoi(item));
+	}
+	return result;
+}
+
+int GetMass(const std::string& peptide) {
+	std::vector<int> masses = SplitStringToList(peptide);
+	int total = 0;
+	for (int mass : masses) {
+		total += mass;
+	}
+	return total;
+}
+
+std::map<int, int> Spectrum(const std::vector<int>& spectrum) {
+	std::map<int, int> result;
+	for (int mass : spectrum) {
+		result[mass]++;
+	}
+	return result;
+}
+
+std::map<int, int> CycloSpectrumProblem(const std::string& peptide) {
+	std::vector<int> peptide_list = SplitStringToList(peptide);
+	int rank = peptide_list.size();
+	std::vector<int> prefix(rank + 1, 0);
+	for (int i = 0; i < rank; ++i) {
+		prefix[i + 1] = prefix[i] + peptide_list[i];
+	}
+	int peptide_mass = prefix[rank];
+	std::vector<int> cspectrum = { 0 };
+
+	for (int i = 0; i < rank; ++i) {
+		for (int j = i + 1; j <= rank; ++j) {
+			int diff = prefix[j] - prefix[i];
+			cspectrum.push_back(diff);
+			if (i > 0 && j < rank) {
+				cspectrum.push_back(peptide_mass - diff);
+			}
+		}
+	}
+	return Spectrum(cspectrum);
+}
+
+int CyclopeptideScoringProblem(const std::string& peptide, const std::map<int, int>& spectrum) {
+	if (peptide.empty()) {
+		return 0;
+	}
+	std::map<int, int> cyclo_spectrum = CycloSpectrumProblem(peptide);
+	int score = 0;
+	for (const auto& [s, v] : cyclo_spectrum) {
+		int v0 = spectrum.find(s) != spectrum.end() ? spectrum.at(s) : 0;
+		score += std::min(v0, v);
+	}
+	return score;
+}
+
+std::map<int, int> LinearSpectrum(const std::string& peptide) {
+	std::vector<int> peptide_list = SplitStringToList(peptide);
+	int rank = peptide_list.size();
+	std::vector<int> prefix(rank + 1, 0);
+	for (int i = 0; i < rank; ++i) {
+		prefix[i + 1] = prefix[i] + peptide_list[i];
+	}
+	std::vector<int> lspectrum = { 0 };
+	for (int i = 0; i < rank; ++i) {
+		for (int j = i + 1; j <= rank; ++j) {
+			int diff = prefix[j] - prefix[i];
+			lspectrum.push_back(diff);
+		}
+	}
+	return Spectrum(lspectrum);
+}
+
+int LinearScore(const std::string& peptide, const std::map<int, int>& spectrum) {
+	if (peptide.empty()) {
+		return 0;
+	}
+	std::map<int, int> linear_spectrum = LinearSpectrum(peptide);
+	int score = 0;
+	for (const auto& [mass, count] : linear_spectrum) {
+		int value = spectrum.find(mass) != spectrum.end() ? spectrum.at(mass) : 0;
+		score += std::min(count, value);
+	}
+	return score;
+}
+
+std::set<std::string> Expand(const std::set<std::string>& peptides) {
+	std::set<std::string> expanded;
+	for (const auto& peptide : peptides) {
+		for (const auto& mass : allMasses) {
+			std::string new_peptide = peptide.empty() ? mass : peptide + "-" + mass;
+			expanded.insert(new_peptide);
+		}
+	}
+	return expanded;
+}
+
+std::set<std::string> Trim(const std::set<std::string>& leaderboard, const std::map<int, int>& spectrum, int count_leaders) {
+	std::vector<std::pair<std::string, int>> scores;
+	for (const auto& peptide : leaderboard) {
+		scores.emplace_back(peptide, LinearScore(peptide, spectrum));
+	}
+	sort(scores.begin(), scores.end(), [](const auto& a, const auto& b) {
+		return a.second > b.second;
+		});
+	std::set<std::string> result;
+	for (int i = 0; i < std::min((int)scores.size(), count_leaders); ++i) {
+		result.insert(scores[i].first);
+	}
+	return result;
+}
+
+std::string LeaderboardCyclopeptideSequencingProblem(const std::vector<int>& spectrum, int count_leaders) {
+	int parentMass = *max_element(spectrum.begin(), spectrum.end());
+	std::map<int, int> spectrum_dict = Spectrum(spectrum);
+	std::set<std::string> peptides = { "" };
+	std::string max_peptide = "";
+	int max_score = 0;
+
+	while (!peptides.empty()) {
+		peptides = Expand(peptides);
+		std::set<std::string> removes;
+		for (const auto& peptide : peptides) {
+			if (GetMass(peptide) == parentMass) {
+				int score = CyclopeptideScoringProblem(peptide, spectrum_dict);
+				if (score > max_score) {
+					max_peptide = peptide;
+					max_score = score;
+				}
+			}
+			else if (GetMass(peptide) > parentMass) {
+				removes.insert(peptide);
+			}
+		}
+		for (const auto& peptide : removes) {
+			peptides.erase(peptide);
+		}
+		peptides = Trim(peptides, spectrum_dict, count_leaders);
+	}
+
+	return max_peptide;
+}

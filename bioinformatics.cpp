@@ -284,6 +284,7 @@ int main()
     */
 
     //1.9 Frequent Words with Mismatches
+    /*
     std::string text;
     int k, d;
     std::cin >> text;
@@ -292,6 +293,135 @@ int main()
     std::vector<std::string> answer = frequentWordsWithMismatches(text, k, d);
     for (size_t i = 0; i < answer.size(); i++)
         std::cout << answer[i] << " ";
+        */
+    
+        /*======= SECTION TWO =======*/
+
+    //2.1 Protein Translation Problem
+    /*
+    std::string RNA_pattern;
+    std::cin >> RNA_pattern;
+    std::string protein = proteinTranslationProblem(RNA_pattern);
+    std::cout << protein;
+    */
+
+    //2.2 Peptide Encoding Problem
+    /*
+    std::string DNA;
+    std::cin >> DNA;
+    std::string geneticCode;
+    std::cin >> geneticCode;
+
+    std::vector<std::string> answer = peptideEncodingProblem(DNA, geneticCode);
+    for (size_t i = 0; i < answer.size(); i++)
+        std::cout << answer[i] << std::endl;
+    */
+
+    //2.3 Subpeptides Count Problem
+    /*
+    int n;
+    std::cin >> n;
+    long long int ans = subpeptidesCountProblem(n);
+    std::cout << ans;
+    */
+
+    //2.4 Generating Theoretical Spectrum Problem
+    /*
+    std::string peptide;
+    std::cin >> peptide;
+    std::vector<int> cyclospectrum = generatingTheoreticalSpectrumProblem(peptide);
+    for (int el : cyclospectrum)
+        std::cout << el << " ";
+    */
+
+    //2.5 Counting Peptides with Given Mass Problem
+    /*
+    int n;
+    std::cin >> n;
+    int ans = countingPeptidesWithGivenMassProblem(n);
+    std::cout << ans;
+    */
+
+    //2.6 Counting Spectrum of the Linear Peptide Problem
+    /*
+    long long int n;
+    std::cin >> n;
+    long long int result = countingSpectrumOfTheLinearPeptideProblem(n);
+    std::cout << result;
+    */
+
+    //2.7 Cyclopeptide Sequencing Problem
+    /*
+    std::string spectrum;
+    std::getline(std::cin, spectrum);
+    
+    
+    std::istringstream iss(spectrum);
+    std::vector<int> spectrum_int((std::istream_iterator<int>(iss)), std::istream_iterator<int>());
+    
+    
+    //spectrum_int.emplace(spectrum_int.begin(), 0);
+    
+    auto answerPeptides = cyclopeptideSequencingProblem(spectrum_int);
+    
+    for (size_t i = 0; i < answerPeptides.size(); i++) {
+        for (size_t j = 0; j < answerPeptides[i].length(); j++) {
+            if (answerPeptides[i][j] == 'Q')
+                answerPeptides[i][j] = 'K';
+            if (answerPeptides[i][j] == 'L')
+                answerPeptides[i][j] = 'I';
+        }
+    }
+    
+    std::sort(answerPeptides.begin(), answerPeptides.end());
+    std::vector<std::string> uniqueAnswerPeptides;
+    for (const auto& element : answerPeptides) {
+        if (uniqueAnswerPeptides.empty() || uniqueAnswerPeptides.back() != element) {
+            uniqueAnswerPeptides.push_back(element);
+        }
+    }
+    for (const auto& peptide : uniqueAnswerPeptides) {
+        for (size_t currentPeptide = 0; currentPeptide < peptide.size(); ++currentPeptide) {
+            if (currentPeptide == peptide.size() - 1) {
+                std::cout << TheoreticalSpectrum[peptide[currentPeptide]];
+            }
+            else {
+                std::cout << TheoreticalSpectrum[peptide[currentPeptide]] << "-";
+            }
+        }
+        std::cout << " ";
+    }
+    std::cout << std::endl;
+    */
+
+    //2.8 Cyclopeptide Scoring Problem
+    /*std::string peptide;
+    std::cin >> peptide;
+
+    std::string spectrum;
+    std::cin >> spectrum;
+    std::getline(std::cin, spectrum);
+
+    std::istringstream iss(spectrum);
+    std::vector<int> sprctrum_Int((std::istream_iterator<int>(iss)), std::istream_iterator<int>());
+    sprctrum_Int.emplace(sprctrum_Int.begin(), 0);
+
+    int score = cyclopeptideScoringProblem(peptide, sprctrum_Int);
+    std::cout << score << std::endl;
+    */
+
+    //2.9 Leaderboard Cyclopeptide Sequencing Problem
+    int N;
+    std::cin >> N;
+
+    std::string spectrum;
+    std::cin >> spectrum;
+    std::getline(std::cin, spectrum);
+
+    std::istringstream iss(spectrum);
+    std::vector<int> sprctrum_Int((std::istream_iterator<int>(iss)), std::istream_iterator<int>());
+
+    std::cout << LeaderboardCyclopeptideSequencingProblem(sprctrum_Int, N) << std::endl;
 
     return 0;
 }
