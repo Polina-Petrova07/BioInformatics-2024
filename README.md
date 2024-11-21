@@ -10,9 +10,13 @@ ____
     + File "bioinformatics.cpp" contains function "main".
     + File "PeptideSequencing.h" contains functions for the second section of course.
  
- + third-section-CellularClocks  
++ third-section-CellularClocks  
     + File "bioinformatics.cpp" contains function "main".
-    + File "CellularClocks.h" contains functions for the third section of course. 
+    + File "CellularClocks.h" contains functions for the third section of course.
+  
++ forth-section-CompareBiologicalSequence  
+    + File "bioinformatics.cpp" contains function "main".
+    + File "CompareBiologicalSequence.h" contains functions for the forth section of course.
 
 >будет дополняться)
 ____
