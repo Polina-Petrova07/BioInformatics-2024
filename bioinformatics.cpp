@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Introdaction.h"
 #include "PeptideSequencing.h"
+#include "CompareBiologicalSequence.h"
 
 
 int main()
@@ -162,6 +163,117 @@ int main()
     int ans = countingPeptidesWithGivenMassProblem(n);
     std::cout << ans;
 
+
+	    /*======= SECTION FORE =======*/
+
+    //4.1 Change Problem
+    /*
+    int money;
+    std::vector<int> coins;
+    std::cin >> money;
+    //std::copy(std::istream_iterator<int>(std::cin), std::istream_iterator<int>(), std::back_inserter(coins));
+    //std::copy(coins.begin(), coins.end(), std::ostream_iterator<size_t>(std::cout, " "));
+    std::cin.ignore();
+    coins = ReadVectorFromConsol();
+
+    int MinNumCoins = MoneyChangeProblem(money, coins);
+    std::cout << MinNumCoins;
+    */
+
+    //4.2 Manhattan Tourist Problem
+    /*
+    size_t n, m;
+    std::cin >> n >> m;
+
+    std::vector<std::vector<size_t>> Down(n, std::vector<size_t>(m + 1));
+    for (size_t i = 0; i < n; ++i)
+        for (size_t j = 0; j < m + 1; ++j)
+            std::cin >> Down[i][j];
+
+    std::cin.ignore();
+    std::cin.ignore();
+
+    std::vector < std::vector<size_t>> Right(n + 1, std::vector<size_t>(m));
+    for (size_t i = 0; i < n + 1; ++i)
+        for (size_t j = 0; j < m; ++j)
+            std::cin >> Right[i][j];
+    size_t answer = ManhattanTouristProblem(n, m, Down, Right);
+    std::cout << answer;
+    */
+
+    //4.3 Longest Common Subsequence Problem
+    /*
+    std::string v, w;
+    std::cin >> v >> w;
+    v = '-' + v;
+    w = '-' + w;
+    std::string answer;
+    std::vector<std::vector<ARROW>> BackTrack = LCSBackTrack(v, w);
+    OutPutLSC(BackTrack, v, v.length() - 1, w.length() - 1, answer);
+    std::reverse(answer.begin(), answer.end());
+    //answer = OutPutLSC(BackTrack, v);
+    std::cout << answer;
+    */
+
+    //4.4 Topological Ordering
+    /*
+    std::unordered_map<int, std::vector<int>> graph;
+    std::unordered_map<int, int> degreeEachNode;
+    
+    readGraph(graph, degreeEachNode);
+    std::vector<int> result = topologicalOrdering(graph, degreeEachNode);
+    
+    if (!result.empty()) {
+        for (size_t i = 0; i < result.size(); ++i) {
+            std::cout << result[i];
+            if (i != result.size() - 1) {
+                std::cout << ", ";
+            }
+        }
+        std::cout << std::endl;
+    }
+    */
+
+    //4.5 Longest Path in a DAG
+    
+    int source, sink;
+    std::cin >> source >> sink;
+    std::unordered_map<int, std::vector<Edge>> graph;
+    std::unordered_map<int, int> in_degree;
+
+    readWeightGraph(graph, in_degree);
+
+    std::vector<int> topo_order = topologicalOrderingWeight(graph, in_degree);
+
+    auto result = findLongestPath(graph, source, sink, topo_order);
+    int longestPathLength = result.first;
+    std::vector<int> longestPath = result.second;
+
+    std::cout << longestPathLength << std::endl;
+    if (!longestPath.empty()) {
+        printPath(longestPath);
+    }
+
+    //4.6 Multiple Longest Common Subsequence
+    /*
+    std::string v, w, u;
+    std::cin >> v >> w >> u;
+    
+    AlignmentResult result = LCS3D(v, w, u);
+    
+    std::cout << result.score << std::endl;
+    std::cout << result.alignedV << std::endl;
+    std::cout << result.alignedW << std::endl;
+    std::cout << result.alignedU << std::endl;
+    */
+
+    //4.7 Edit Distance
+    /*
+    std::string v, w;
+    std::cin >> v >> w;
+    
+    int result = editDistance(v, w);
+    std::cout << result << std::endl;*/
     return 0;
 }
 
