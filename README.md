@@ -17,8 +17,12 @@ ____
 + forth-section-CompareBiologicalSequence  
     + File "bioinformatics.cpp" contains function "main".
     + File "CompareBiologicalSequence.h" contains functions for the forth section of course.
+ 
++ fifth-section-Graphs-algorithms
+    +  File "bioinformatics.cpp" contains function "main".
+    +  File "GraphsAlgorithms.h" contains functions for the fifth section of course.
 
->будет дополняться)
+> не будет дополняться)
 ____
 ННГУ. ИИТММ.  
 >Copyrighting Busko Polina 2024
